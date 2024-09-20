@@ -1,6 +1,6 @@
 #************************************************************************************
 #  TP1 : chiffrement par fonction affine et force brute
-#  Noms :
+#  Noms : 
 #  Groupe : 
 #  Date :
 #  Bilan  d'avancement :
@@ -84,9 +84,16 @@ def bezoutRec(a, b) :
 #  commentaire à compléter
 #************************************************************************************
 def inverseModulaireNaif(a, n) :
-    
+    while a*b == 1%n:
+        b = b+1
+    return b
+
 #************************************************************************************
-#  commentaire à compléter
+#  l'inverse modulaire et le x qu'on recherche pour que quand on divise notre a*x par n pour obtenir 1 ce qui confirme qu'ils sont bien premiers entre eux
+# a*x≡1 (mod n)
+# 3*x≡1 (mod 7) /// 3*x≡15 (mod 7) /// 15%7=1 donc x=5
+# pour absolument avoir l'inverse modulaire il faut PGCD(a,n)=1
+# utiliser les coef de bezout pour touver le x et y dans : a*x+n*y=PGCD(a,n)
 #************************************************************************************
 def inverseModulaire(a, n) :
     def bezout(a, b):
@@ -103,9 +110,17 @@ def inverseModulaire(a, n) :
     return x % n
 
 #************************************************************************************
+
+
 # TEST INVERSE MODULAIRE
-a, n = 3, 29
-inverseModulaire(a, n)
+am, nm = 3, 29
+im = inverseModulaire(am, nm)
+print(am, nm,  im)
+
+# TEST INVERSE MODULAIRE NAIF
+a, n  = 3, 29
+i = inverseModulaireNaif(a, n)
+print(a, n,  i)
 
 
 #************************************************************************************************************************************
@@ -123,6 +138,7 @@ def fonctChiffreCarAffine(a,b,n):
         #.............................
         # à completer par vos soins
         #.............................
+        return
     return fonctAffine
 
 #************************************************************************************
@@ -138,11 +154,13 @@ def chargeDicoFrancais ():
 #*********************************************************************************************
 def estMotFrancais (mot):
       # a completer
+      return
 
 #********************************************************************************************
 # à compléter
 #*********************************************************************************************
 def pourcentageMotsFrancaisReconnus(chain) :
+    return
 
 
 #********************************************************************************************
