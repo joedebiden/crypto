@@ -84,13 +84,28 @@ def bezoutRec(a, b) :
 #  commentaire à compléter
 #************************************************************************************
 def inverseModulaireNaif(a, n) :
-    # a completer
-
+    
 #************************************************************************************
 #  commentaire à compléter
 #************************************************************************************
 def inverseModulaire(a, n) :
-    # a completer
+    def bezout(a, b):
+        if b == 0:
+            return a, 1, 0
+        else: 
+            d, x1, y1 = bezout(b, a % b)
+            x = y1
+            y = x1 - (a // b) * y1
+            return d, x, y
+    d, x, y = bezout(a, n)
+    if d != 1:
+        raise ValueError("Pas d'inverse modulaire")
+    return x % n
+
+#************************************************************************************
+# TEST INVERSE MODULAIRE
+a, n = 3, 29
+inverseModulaire(a, n)
 
 
 #************************************************************************************************************************************
