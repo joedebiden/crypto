@@ -31,9 +31,14 @@ gl_dicoFrancais=[]  # liste de chaines qui contiendra les mots français
 #  valeur retournee : le pgcd des deux nombres
 #************************************************************************************
 def pgcd(a,b) :
-    while a%b != 0:
-        a,b = b,a%b
-    return b
+    while a%b!=0:
+        a,b=b, a%b
+    return b 
+
+a=12 
+b=18
+print(pgcd(a,b))
+
 
 #************************************************************************************
 #  calcul du pgcd de deux nombres  version recursive
@@ -41,37 +46,45 @@ def pgcd(a,b) :
 #  valeur retournee : le pgcd des deux nombres
 #************************************************************************************
 def pgcdRec(a,b) :
-  if a%b ==0:
-      return b
-  else: 
-      return pgcdRec (b,a%b)
-  
+    if a%b == 0:
+        return b
+    else:
+        return pgcdRec(b, a%b)
+
+#************************************************************************************
+#  def bezoutIt(a, b) :
+    r, R, u, U, v, V = a, b, 1, 0, 0, 1
+    while r > 0:
+        q = r//R
+        r, R, u, U, v, V = R, r%R, U, u - q*U, V, v - q*V
+    return (u, v)
+#************************************************************************************
+def bezoutIt(a, b):
+    r, R, u, U, v, V = a, b, 1, 0, 0, 1
+    while R > 0:
+        q = r // R
+        r, R = R, r % R
+        u, U = U, u - q * U
+        v, V = V, v - q * V
+    return (u, v)
+
+    
 #************************************************************************************
 #  commentaire à compléter
 #************************************************************************************
 def bezoutRec(a, b) :
-    if a%b == 0 :
-        return (0,1)
-    r,q=a%b, a //b
-    u,v = bezoutRec(b,r)
-    return (v,u-v*q)
-
-#************************************************************************************
-#  commentaire à compléter
-#************************************************************************************
-def bezoutIt(a, b) :
-    r, R, u, U, v, V = a, b, 1, 0, 0, 1
-    while R>0:
-        q = r//R
-        r,R,u,U,v,V = R,r%R,U,u-q*U,V,v-q*V
-    return (u,v)
-    
+    if a%b == 0:
+        return (0, 1)
+    else: 
+        r, q = a%b, a//b
+        u, v = bezoutRec(b, r)
+        return(v,u - v*q)
 
 #************************************************************************************
 #  commentaire à compléter
 #************************************************************************************
 def inverseModulaireNaif(a, n) :
-    
+    # a completer
 
 #************************************************************************************
 #  commentaire à compléter
@@ -95,25 +108,6 @@ def fonctChiffreCarAffine(a,b,n):
         #.............................
         # à completer par vos soins
         #.............................
-        ex="CECI EST UN EXEMPLE"
-ex.split(" ")
-['CECI', 'EST', 'UN', 'EXEMPLE']
-liste=ex.split(" ")
-liste
-['CECI', 'EST', 'UN', 'EXEMPLE']
-for mot in liste:
-    mot
-
-    
-'CECI'
-'EST'
-'UN'
-'EXEMPLE'
-'UNE' in liste
-False
-'UN' in liste
-True
-
     return fonctAffine
 
 #************************************************************************************
