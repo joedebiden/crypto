@@ -5,7 +5,8 @@
 #  Date :
 #  Bilan  d'avancement :
 #************************************************************************************
-import time
+import time 
+from time import perf_counter
 import operator
 
 #*******************************************************************************************
@@ -34,10 +35,6 @@ def pgcd(a,b) :
     while a%b!=0:
         a,b=b, a%b
     return b 
-
-a=12 
-b=18
-print(pgcd(a,b))
 
 
 #************************************************************************************
@@ -84,8 +81,10 @@ def bezoutRec(a, b) :
 #  commentaire à compléter
 #************************************************************************************
 def inverseModulaireNaif(a, n) :
-    while a*b == 1%n:
+    b = 1 
+    while (a*b) %n != 1 :
         b = b+1
+        #print(b)
     return b
 
 #************************************************************************************
@@ -103,6 +102,7 @@ def inverseModulaire(a, n) :
             d, x1, y1 = bezout(b, a % b)
             x = y1
             y = x1 - (a // b) * y1
+            #print(d, x, y)
             return d, x, y
     d, x, y = bezout(a, n)
     if d != 1:
@@ -110,18 +110,22 @@ def inverseModulaire(a, n) :
     return x % n
 
 #************************************************************************************
+# TEST de la fonction inverseModulaire NAIF vs RECURSIVE
+'''
+a = 5452322311
+n = 21435323131231
 
+t2_start = perf_counter()
+inverseModulaire(a, n)
+t2_stop = perf_counter()
 
-# TEST INVERSE MODULAIRE
-am, nm = 3, 29
-im = inverseModulaire(am, nm)
-print(am, nm,  im)
+t1_start = perf_counter()
+inverseModulaireNaif(a, n)
+t1_stop = perf_counter()
 
-# TEST INVERSE MODULAIRE NAIF
-a, n  = 3, 29
-i = inverseModulaireNaif(a, n)
-print(a, n,  i)
-
+print("inverseModulaireNaif : ", t1_stop-t1_start, "\ninverseModulaire :", t2_stop-t2_start)
+print("inverseModulaire avec la recursivité est trop fast")
+'''
 
 #************************************************************************************************************************************
 # contruction fonction de chiffrage (ou de déchiffrage) monoalphabétique affine   
@@ -134,12 +138,18 @@ print(a, n,  i)
 #
 #***********************************************************************************************************************************
 def fonctChiffreCarAffine(a,b,n):
-    def fonctAffine (car):
-        #.............................
-        # à completer par vos soins
-        #.............................
-        return
+    def fonctAffine(car):
+        if 'A' <= car <= 'Z':
+            return chr((a * (ord(car) - ord('A')) + b) % n + ord('A'))
+        else:
+            return car  # Ne pas chiffrer les caractères non alphabétiques
     return fonctAffine
+
+# ============= test de la fonctChiffreCarAffine =============
+#f = fonctChiffreCarAffine(8, 15, 26)
+#print("A B C D E F G H I J K L M N O P Q R S T U V W X Y Z")
+#print(f('A'), f('B'), f('C'), f('D'), f('E'), f('F'), f('G'), f('H'), f('I'), f('J'), f('K'), f('L'), f('M'), f('N'), f('O'), f('P'), f('Q'), f('R'), f('S'), f('T'), f('U'), f('V'), f('W'), f('X'), f('Y'), f('Z'))
+
 
 #************************************************************************************
 #  charge le dictionnaire francais sous forme d'une liste de chaines de caractères
@@ -147,20 +157,35 @@ def fonctChiffreCarAffine(a,b,n):
 #************************************************************************************
 def chargeDicoFrancais ():
     global gl_dicoFrancais
-       # a completer
+    with open("dico.txt", "r") as f:
+        gl_dicoFrancais = f.read().splitlines()
+
+#chargeDicoFrancais()  #// je le charge déjà dans la derniere fonction 
+#print(gl_dicoFrancais[100:200])
+
 #********************************************************************************************
 # recherche si un mot est dans le dictionnaire supposé être dans la variable
 # globale gl_dicoFrancais et  renvoie True si c'est le cas et False dans le cas contraire
 #*********************************************************************************************
 def estMotFrancais (mot):
-      # a completer
-      return
+    mot = mot.upper()
+    if mot in gl_dicoFrancais:
+        return True
+    else: 
+        return False
+
+#choix = input("Entrez un mot : ")
+#print(estMotFrancais(choix))
 
 #********************************************************************************************
 # à compléter
 #*********************************************************************************************
 def pourcentageMotsFrancaisReconnus(chain) :
-    return
+    mots = chain.split()
+    if len(mots) == 0:
+        return 0
+    pourcMot = sum(1 for mot in mots if estMotFrancais(mot))
+    return (pourcMot/len(mots))*100
 
 
 #********************************************************************************************
@@ -169,4 +194,45 @@ def pourcentageMotsFrancaisReconnus(chain) :
 # utilisée pour le déchiffrer ainsi que la fonction ayant permis le chiffrement. On affichera
 # aussi le temps qui a été nécessaire au déchiffrement
 #*********************************************************************************************
-   # à compléter
+def forceBruteChiffrementAffine (messageChiffre, n=26):
+    meilleurPourcentage = 0
+    meilleurMessage = ""
+    meilleurFonction = None
+    meilleurTemps = 0
+    chargeDicoFrancais()
+    
+    for a in range(1, n):
+        if pgcd(a, n) == 1:
+            for b in range(n):
+                try:
+                    a_inv = inverseModulaire(a, n)
+                except ValueError:
+                    continue
+
+                dechiffreCarAffine = fonctChiffreCarAffine(a_inv, -a_inv*b, n)
+                start_time = time.perf_counter()
+                messageDechiffre = "".join(dechiffreCarAffine(car) for car in messageChiffre)
+                end_time = time.perf_counter()
+                pourc = pourcentageMotsFrancaisReconnus(messageDechiffre)
+
+                if pourc > meilleurPourcentage:
+                    meilleurPourcentage = pourc
+                    meilleurMessage = messageDechiffre
+                    meilleurFonction = dechiffreCarAffine
+                    meilleurTemps = end_time - start_time
+    
+    print(f"Meilleur message : {meilleurMessage}")
+    print(f"Meilleur pourcentage : {meilleurPourcentage}")
+    print(f"Meilleur temps : {meilleurTemps}")
+    print(f"Meilleur fonction : {meilleurFonction}")
+
+#************************************************************************************
+#  TEST de la fonction forceBruteChiffrementAffine
+
+messageChiffre = litFichier("messageChiffreAffine1.txt")
+forceBruteChiffrementAffine(messageChiffre)
+
+
+
+
+
