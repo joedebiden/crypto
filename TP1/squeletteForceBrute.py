@@ -157,7 +157,7 @@ def fonctChiffreCarAffine(a,b,n):
 #************************************************************************************
 def chargeDicoFrancais ():
     global gl_dicoFrancais
-    with open("dico.txt", "r") as f:
+    with open('dictionnaire.txt', 'r') as f:
         gl_dicoFrancais = f.read().splitlines()
 
 #chargeDicoFrancais()  #// je le charge déjà dans la derniere fonction 
@@ -229,10 +229,25 @@ def forceBruteChiffrementAffine (messageChiffre, n=26):
 #************************************************************************************
 #  TEST de la fonction forceBruteChiffrementAffine
 
-messageChiffre = litFichier("messageChiffreAffine1.txt")
-forceBruteChiffrementAffine(messageChiffre)
+#messageChiffre = litFichier("messageChiffreAffine1.txt")
+#forceBruteChiffrementAffine(messageChiffre)
 
+#************************************************************************************
+# messageChiffreAffine2.txt
+chaine = litFichier("messageChiffreAffine2.txt")
+def nbMotsFrancaisReconnusSansSepar(chaine):
+    chargeDicoFrancais()
+    
+    Mot = chaine[0:10]
+    CheckMot = fonctChiffreCarAffine(Mot)
+    CompareDico = estMotFrancais(Mot) 
+    
+    X = 10
+    while Mot != CompareDico is True:
+        CheckMot(Mot)
+        X = 10 - 1
 
+    
+        
 
-
-
+nbMotsFrancaisReconnusSansSepar(chaine)
