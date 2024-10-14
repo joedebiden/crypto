@@ -94,6 +94,8 @@ def inverseModulaireNaif(a, n) :
 # pour absolument avoir l'inverse modulaire il faut PGCD(a,n)=1
 # utiliser les coef de bezout pour touver le x et y dans : a*x+n*y=PGCD(a,n)
 #************************************************************************************
+a = 5
+b = 221
 def inverseModulaire(a, n) :
     def bezout(a, b):
         if b == 0:
@@ -108,6 +110,9 @@ def inverseModulaire(a, n) :
     if d != 1:
         raise ValueError("Pas d'inverse modulaire")
     return x % n
+print(inverseModulaire(a,b))
+c = (33**77) % 221
+print(c)
 
 #************************************************************************************
 # TEST de la fonction inverseModulaire NAIF vs RECURSIVE
