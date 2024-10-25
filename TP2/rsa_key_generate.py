@@ -22,35 +22,73 @@ def wordToNumber(mot):
         i+=1
     return num - 1
 
-def findCoprime(secret):
-    while True:
-        e = random.randint(2, secret - 1)
-        if gcd(e, secret) == 1:
-            return e
+def numberToWord(n):
+    mot = ""
+    while n>=0:
+        mot = chr(n%26+65)+mot
+        n = n//26-1
+    return mot
 
+
+''' === test convertion ===
+mot = "CHARENSOL"
+encrypted = wordToNumber(mot)
+deencrypted = numberToWord(encrypted)
+print(mot)
+print(encrypted)
+print(deencrypted)
+'''
+
+# to do
 p = int(578686194785252290248347697089)
 q = int(236369746748300413097241111169)
-n = p*q
-print(f"Vos chiffres top secrets : \np={p} \nq={q} \nn={n}")
+n=p*q
+def testCoprime(n):
+    e = (p-1)*(q-1)
+    e = random.randint(2, n - 1)
+    if gcd(e, n) == 1:
+        return True
+    else :
+        return False
+
+print(testCoprime(n))
+
+def puiMod(x,e,n):
+    if e==0:
+        return 1
+    if e==1:
+        return x
+    else:
+        if e % n ==0:
+            b = x^(e/2)%n
+            return b*b%n 
+        else:
+            b = x^((e-1)/2)%n
+            return b*b*x%n
+        
+def chiffreRSA(n,e,liste):
+    return null
+    
+
+
+'''
+
 secret = (p - 1) * (q - 1)
 e = findCoprime(secret)
-
-print(f"Valeur de e : {e}")
 clef_publique = n, e
+
+print(f"Vos chiffres top secrets : \np={p} \nq={q} \nn={n}")
+print(f"Valeur de e : {e}")
 print(f"Votre clef publique : {clef_publique}")
 
+liste = input("Entrez votre message à chiffrer : ")
+liste = wordToNumber(liste)
+print(f"Votre message chiffré est : {message**e % n}")
 # fonction cryptage
-def cryptageRSA():
-    message = input("Entrez votre message à chiffrer : ")
-    message = wordToNumber(message)
-    print(f"Votre message chiffré est : {message**e % n}")
+def cryptageRSA(n, e, liste):
 
-cryptageRSA()
-
-
-
-
-
+cryptageRSA(e, n)
+'''
 
 
 # bezout pour l'inverse modulaire
