@@ -14,6 +14,7 @@ partie dechiffrage :
 import random
 from math import gcd
 
+
 def wordToNumber(mot):
     num = 0
     i=0
@@ -40,55 +41,63 @@ print(deencrypted)
 '''
 
 # to do
-p = int(578686194785252290248347697089)
-q = int(236369746748300413097241111169)
+p = int(5786878)
+q = int(234830)
 n=p*q
-def testCoprime(n):
-    e = (p-1)*(q-1)
-    e = random.randint(2, n - 1)
-    if gcd(e, n) == 1:
+def testPrime(n):
+    miaouw = (p - 1) * (q - 1)
+    e = random.randint(2, miaouw - 1)
+    if gcd(e, miaouw) == 1:
         return True
-    else :
+    else:
         return False
 
-print(testCoprime(n))
+def aleaE(p, q):
+    e = random.randint(2, (p-1)*(q-1))
+    while gcd(e, (p-1)*(q-1)) != 1:
+        e = random.randint(2, (p-1)*(q-1))
+    return e
 
-def puiMod(x,e,n):
-    if e==0:
-        return 1
-    if e==1:
-        return x
-    else:
-        if e % n ==0:
-            b = x^(e/2)%n
-            return b*b%n 
-        else:
-            b = x^((e-1)/2)%n
-            return b*b*x%n
-        
-def chiffreRSA(n,e,liste):
-    return null
     
 
+def puiMod(x, e, n):
+    if e == 0:
+        return 1
+    if e == 1:
+        return x % n
+    if e % 2 == 0:
+        b = puiMod(x, e // 2, n)
+        return (b * b) % n
+    else:
+        b = puiMod(x, (e - 1) // 2, n)
+        return (b * b * x) % n
+        
 
-'''
+def chiffreRSA(n,e,liste):
+    list_num = []
+    list_crypt = []
+    list_result = []
 
-secret = (p - 1) * (q - 1)
-e = findCoprime(secret)
-clef_publique = n, e
+    for mot in liste:
+        list_num.append(wordToNumber(mot))
 
-print(f"Vos chiffres top secrets : \np={p} \nq={q} \nn={n}")
-print(f"Valeur de e : {e}")
-print(f"Votre clef publique : {clef_publique}")
 
-liste = input("Entrez votre message à chiffrer : ")
-liste = wordToNumber(liste)
-print(f"Votre message chiffré est : {message**e % n}")
-# fonction cryptage
-def cryptageRSA(n, e, liste):
+    for num in list_num:
+        list_crypt.append(puiMod(num, e, n))
 
-cryptageRSA(e, n)
-'''
+
+    for num in list_crypt:
+        list_result.append((numberToWord(num)))
+    return list_result
+
+        
+    
+
+liste = ["ACHETEZ", "MES", "KINDER", "ILS", "SONT", "A", "UN", "EURO"]
+e=aleaE(p,q)
+print(chiffreRSA(n, e, liste))
+
+
 
 
 # bezout pour l'inverse modulaire
@@ -102,3 +111,20 @@ def bezoutRec(p, q) :
 
 
 
+def inverseModulaire(a, n) :
+    def bezout(a, b):
+        if b == 0:
+            return a, 1, 0
+        else:
+            d, x1, y1 = bezout(b, a % b)
+            x = y1
+            y = x1 - (a // b) * y1
+            #print(d, x, y)
+            return d, x, y
+    d, x, y = bezout(a, n)
+    if d != 1:
+        raise ValueError("Pas d'inverse modulaire")
+    return x % n
+
+d=inverseModulaire(e, (p-1)*(q-1))
+print(chiffreRSA(n, d, chiffreRSA(n, e, liste)))
