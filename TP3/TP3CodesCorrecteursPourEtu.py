@@ -40,13 +40,13 @@ print(x)
 #  entree p : probabilité d'erreur
 #  valeur reournee : la liste de booleens bruitée
 
-
+# Cette fonction permet transformer une ligne avec en parametre vectBool les pixels et p la proba de corruption
 def transmettreVectBool(vectBool, p):
     vectSortie = np.zeros(len(vectBool), dtype=np.uint8)
     
     for i in range(len(vectBool)):
         if np.random.rand() < p:
-            vectSortie[i] = 1 - vectBool[i]
+            vectSortie[i] = not vectBool[i]
         else:
             vectSortie[i] = vectBool[i]
     
@@ -64,21 +64,32 @@ def transmettreVectBool(vectBool, p):
 def transmettreMatrice(matriceBool, p):
     nouvelleMatrice = np.zeros(matriceBool.shape, dtype=np.uint8)
     for i in range(matriceBool.shape[0]):
-        for j in range(matriceBool.shape[1]):
-            if np.random.rand() < p:
-                nouvelleMatrice[i, j] = matriceBool[i, j]
+        nouvelleMatrice[i] = transmettreVectBool(matriceBool[i], p)
     return nouvelleMatrice
+
 ## Question I.3                        
-p=0.1    
+p=0.01
 fleur=imread('floral.tif')
-show(imshow(fleur))
+imshow(fleur)
+show()
+fleurB=transmettreMatrice(fleur,p)
+imshow(fleurB)
+show()
 ##afficher ensuite la fleur bruitée                      
 ##show(imshow(fleurBruite))
 ## vous afficherez l'image bruitee
 ##créez une fonction calculant le taux d'erreur 
-##print ("taux erreurs" ,tauxErreurs(fleur,fleurBruite))                        
-##
+##print ("taux erreurs" ,tauxErreurs(fleur,fleurBruite))    
+#                     
+def tauxErreurs(fleur, fleurB):
+    if fleur.shape != fleurB.shape:
+        raise ValueError("not the same size!")
+    differences = np.sum(fleur != fleurB)
+    total_pixels = fleur.size
+    taux_erreur = differences / total_pixels
+    return taux_erreur
 
+print(tauxErreurs(fleur, fleurB))   
 
 ## II. Contrôle de parité simple
 ## Question II.1
