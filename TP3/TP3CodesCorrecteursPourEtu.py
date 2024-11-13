@@ -73,6 +73,7 @@ fleur=imread('floral.tif')
 imshow(fleur)
 show()
 fleurB=transmettreMatrice(fleur,p)
+imsave("fleurB.tif",fleurB*255)
 imshow(fleurB)
 show()
 ##afficher ensuite la fleur bruitée                      
@@ -80,7 +81,8 @@ show()
 ## vous afficherez l'image bruitee
 ##créez une fonction calculant le taux d'erreur 
 ##print ("taux erreurs" ,tauxErreurs(fleur,fleurBruite))    
-#                     
+
+## Question I.4            
 def tauxErreurs(fleur, fleurB):
     if fleur.shape != fleurB.shape:
         raise ValueError("not the same size!")
@@ -91,12 +93,16 @@ def tauxErreurs(fleur, fleurB):
 
 print(tauxErreurs(fleur, fleurB))   
 
+
+
+
+
 ## II. Contrôle de parité simple
 ## Question II.1
 #******************************************************************************************************************
 #  Fonction calculant un bit de parite paire sur une liste de booleen et le rajoutant à la fin de la liste
 #  entree  listebool : une liste de booléens
-#  valeur retournée : la liste entrée plus le bit de parité paire placé à la fin de la liste
+#  valeur retournée :d la liste entrée plus le bit de parité paire placé à la fin e la liste
 #  tenez compte du fait que pour l'addition True vaut 1 et False 0  True+True=2  True+False=1  True+True+True =3 etc ..
 #  utilisez la fonction sum (liste)  qui fait la somme des termes d'une liste
 #  valider avec  x=array ([[0,1,0,1,0]],dtype=bool)
