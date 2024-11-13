@@ -31,26 +31,27 @@ def numberToWord(n):
     return mot
 
 
-''' === test convertion ===
-mot = "CHARENSOL"
-encrypted = wordToNumber(mot)
-deencrypted = numberToWord(encrypted)
-print(mot)
-print(encrypted)
-print(deencrypted)
-'''
 
 # to do
-p = int(5786878)
-q = int(234830)
+p = int(5783)
+q = int(2351)
 n=p*q
+
 def testPrime(n):
-    miaouw = (p - 1) * (q - 1)
-    e = random.randint(2, miaouw - 1)
-    if gcd(e, miaouw) == 1:
+    n = n // 2
+    n = n ** 0.5
+    if n == 1:
         return True
-    else:
-        return False
+    return False
+
+def nextPrime(n):
+    if testPrime(n) != 1:
+        n += 1
+    return n
+
+
+print("n: ", nextPrime(n))
+
 
 def aleaE(p, q):
     e = random.randint(2, (p-1)*(q-1))
@@ -58,20 +59,21 @@ def aleaE(p, q):
         e = random.randint(2, (p-1)*(q-1))
     return e
 
-    
+print("e: ", aleaE(p, q))
 
 def puiMod(x, e, n):
     if e == 0:
         return 1
-    if e == 1:
-        return x % n
-    if e % 2 == 0:
+    elif e == 1:
+        return x
+    elif e % 2 == 0:
         b = puiMod(x, e // 2, n)
         return (b * b) % n
     else:
         b = puiMod(x, (e - 1) // 2, n)
         return (b * b * x) % n
-        
+
+
 
 def chiffreRSA(n,e,liste):
     list_num = []
@@ -90,10 +92,11 @@ def chiffreRSA(n,e,liste):
         list_result.append((numberToWord(num)))
     return list_result
 
-        
-    
+
+
 
 liste = ["ACHETEZ", "MES", "KINDER", "ILS", "SONT", "A", "UN", "EURO"]
+print(liste)
 e=aleaE(p,q)
 print(chiffreRSA(n, e, liste))
 
