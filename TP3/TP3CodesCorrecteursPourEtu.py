@@ -42,10 +42,10 @@ print(x)
 
 # Cette fonction permet transformer une ligne avec en parametre vectBool les pixels et p la proba de corruption
 def transmettreVectBool(vectBool, p):
-    vectSortie = np.zeros(len(vectBool), dtype=np.uint8)
+    vectSortie = zeros(len(vectBool), dtype=np.uint8)
     
     for i in range(len(vectBool)):
-        if np.random.rand() < p:
+        if random.rand() < p:
             vectSortie[i] = not vectBool[i]
         else:
             vectSortie[i] = vectBool[i]
@@ -62,7 +62,7 @@ def transmettreVectBool(vectBool, p):
 #  valeur reournee : la matrice de booleens bruitée
 #************************************************************************************
 def transmettreMatrice(matriceBool, p):
-    nouvelleMatrice = np.zeros(matriceBool.shape, dtype=np.uint8)
+    nouvelleMatrice = zeros(matriceBool.shape, dtype=np.uint8)
     for i in range(matriceBool.shape[0]):
         nouvelleMatrice[i] = transmettreVectBool(matriceBool[i], p)
     return nouvelleMatrice
@@ -84,17 +84,12 @@ show()
 
 ## Question I.4            
 def tauxErreurs(fleur, fleurB):
-    if fleur.shape != fleurB.shape:
-        raise ValueError("not the same size!")
-    differences = np.sum(fleur != fleurB)
+    differences = sum(fleur != fleurB)
     total_pixels = fleur.size
     taux_erreur = differences / total_pixels
     return taux_erreur
 
 print(tauxErreurs(fleur, fleurB))   
-
-
-
 
 
 ## II. Contrôle de parité simple
@@ -108,9 +103,17 @@ print(tauxErreurs(fleur, fleurB))
 #  valider avec  x=array ([[0,1,0,1,0]],dtype=bool)
 #************************************************************************************************************************
 def controlPar(listebool):
-  # à compléter
+        
+    somme = sum(listebool)
+    listebool.append(somme %2)
+    return listebool
 
-    return 
+
+print(controlPar([0,1,0,0]))
+
+
+
+
 ## Question II.2
 #***************************************************************************************************************************
 
