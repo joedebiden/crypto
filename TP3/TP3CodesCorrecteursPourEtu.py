@@ -45,7 +45,7 @@ def transmettreVectBool(vectBool, p):
     vectSortie = zeros(len(vectBool), dtype=np.uint8)
     
     for i in range(len(vectBool)):
-        if random.rand() < p:
+        if random() < p: 
             vectSortie[i] = not vectBool[i]
         else:
             vectSortie[i] = vectBool[i]
@@ -71,11 +71,11 @@ def transmettreMatrice(matriceBool, p):
 p=0.01
 fleur=imread('floral.tif')
 imshow(fleur)
-show()
+# show()
 fleurB=transmettreMatrice(fleur,p)
 imsave("fleurB.tif",fleurB*255)
 imshow(fleurB)
-show()
+# show()
 ##afficher ensuite la fleur bruitée                      
 ##show(imshow(fleurBruite))
 ## vous afficherez l'image bruitee
@@ -89,7 +89,7 @@ def tauxErreurs(fleur, fleurB):
     taux_erreur = differences / total_pixels
     return taux_erreur
 
-print(tauxErreurs(fleur, fleurB))   
+# print(tauxErreurs(fleur, fleurB))   
 
 
 ## II. Contrôle de parité simple
@@ -109,18 +109,36 @@ def controlPar(listebool):
     return listebool
 
 
-print(controlPar([0,1,0,0]))
+# print(controlPar([1,1,1,0]))
+
 
 
 
 
 ## Question II.2
 #***************************************************************************************************************************
-
+# ajout du bit de parité 
+# simuler transmission erreur 
+# check erreur de parité
+# récupérer résultat corompu (avec erreur sur le bit de parité)
+# re simuler pour renvoyer le vecteur 
 #******************************************************************************************************************************
-def transBlocParite(mb):
-   # à compléter
-    return 
+def transBlocParite(vectbool, p):
+    ajout_bit = controlPar(vectbool) #ajout bit parité
+    gen_erreur = transmettreVectBool(ajout_bit, p) #transmittion avec % erreurs
+    
+    # check l'erreur, si le total des bits et impair alors refaire la transmition 
+    while sum(gen_erreur)%2==1:
+        print(f"L'erreur: {gen_erreur}")
+        gen_erreur = transmettreVectBool(ajout_bit, p)
+        
+    print(f"Bonne transmission: {gen_erreur}")
+    return gen_erreur[0:-1]
+ 
+
+print(transBlocParite([0,1,1,1], 0.5))
+
+
 
 ## Question II.3
 #*********************************************************************************************************************************
