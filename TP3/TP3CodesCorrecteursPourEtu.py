@@ -18,7 +18,7 @@ from random import *
 # Pour prendre en main les tableaux (array) 
 #************************************************************************************
 # lit le fichier image (noir et blanc) et le renvoie sous forme d'une matrice de booleens.
-fleur=imread('floral.tif')
+fleur=imread('floral.TIF')
 # Directement à la  console faites afficher fleur, fleur[0], len (fleur) et len (fleur[0]) et donnez leur
 # signification en regardant la taille de l'image dans le gestionnaire de fichier windows
 
@@ -69,9 +69,9 @@ def transmettreMatrice(matriceBool, p):
 
 ## Question I.3                        
 p=0.01
-fleur=imread('floral.tif')
+fleur=imread('floral.TIF')
 imshow(fleur)
-# show()
+show()
 fleurB=transmettreMatrice(fleur,p)
 imsave("fleurB.tif",fleurB*255)
 imshow(fleurB)
@@ -124,7 +124,7 @@ def controlPar(listebool):
 # re simuler pour renvoyer le vecteur 
 #******************************************************************************************************************************
 def transBlocParite(vectbool, p):
-    ajout_bit = controlPar(vectbool) #ajout bit parité
+    ajout_bit = controlPar(list(vectbool)) #ajout bit paritématriceBool
     gen_erreur = transmettreVectBool(ajout_bit, p) #transmittion avec % erreurs
     
     # check l'erreur, si le total des bits et impair alors refaire la transmition 
@@ -136,7 +136,7 @@ def transBlocParite(vectbool, p):
     return gen_erreur[0:-1]
  
 
-print(transBlocParite([0,1,1,1], 0.5))
+# print(transBlocParite([0,1,1,1], 0.5))
 
 
 
@@ -147,9 +147,18 @@ print(transBlocParite([0,1,1,1], 0.5))
 #  entree  mb : une matrice de booléens avce bits de parité paire
 #  valeur retournée : la matrice de booléens en entrée mais sans les bits de parité
 #******************************************************************************************************************************
-def transMatriceParite(mb):
-   # à compléter
-    return 
+
+def transMatriceParite(mb,p):
+    nouvelleMatrice = zeros(shape(mb), dtype=np.uint8)
+    for i in range(len(mb)):
+        for j in range(0, len(mb[i]), 4):
+            nouvelleMatrice[i, j:j+4] = transBlocParite(mb[i, j:j+4], p)
+    return nouvelleMatrice
+
+test = transMatriceParite(fleur, 0.3)
+imshow(test)
+show()
+imsave("floral_corriged.tif", test*255)
 
 
 ## Question II.5
