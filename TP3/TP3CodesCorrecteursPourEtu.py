@@ -160,24 +160,3 @@ imshow(test)
 show()
 imsave("floral_corriged.tif", test*255)
 
-
-## Question II.5
-#********************************************************************************************************
-#  Fonction calulant le taux des differences (dues aux erreurs de transmission)?Ce sera un nombre entre 0 et 1
-#  entre deux matrices booléennes
-#  entree mb1  : une matrice de booleens 
-#  entree mb2  : une matrice de booleens
-#  valeur retournee : pourcentage de differences entre les  2 matrices
-#  precondition : les 2 matrices seront de même taille (même nombre de lignes, même nombre de colonnes)
-#*********************************************************************************************************
-def tauxErreurs(mb1,mb2):
-   #à compléter
-
-
-
-    return 
-
-
-
-#
-

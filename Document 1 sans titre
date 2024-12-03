@@ -1,0 +1,10 @@
+Préparation au DS de crypto
+
+Le codage Hamming(7,4):
+1) On veut transmettre le bloc de données [1,1,0,1], quel est le blod de 7 bits transmis ? 
+	
+
+2) On reçoit le bloc de 7 bits [1,1,0,1,0,1,1] obtenus après un codage Hamming(7,4). 
+Quel est son syndrôme ? (0 si pas d'erreur ou un entier entre 1 et 7 indiquant la position de l'erreur).
+
+
